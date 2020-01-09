@@ -22,6 +22,8 @@
 
 ![Редактирование переменных окружения для приложения на Heroku](https://drive.google.com/uc?export=view&id=1fiNHjoEXQtbCd8zG10IXBLVojSyVszfP "Редактирование переменных окружения для приложения на Heroku")
 
+Использование ключа сервисного аккаунта Google требует установки билдпака. Он устанавливается также на вкладке `Settings` в разделе `Buildpacks`. Адрес билдпака: https://github.com/gerywahyunugraha/heroku-google-application-credentials-buildpack
+
 Для работы понадобятся следующие переменные:
 
 ```
@@ -30,7 +32,7 @@ TELEGRAM_BOT_TOKEN=токен бота, который будет отвечат
 TELEGRAM_LOGGING_BOT_TOKEN=токен бота, который будет сообщать об ошибках
 TELEGRAM_LOGGING_CHAT_ID=чат, в который будут отправляться сообщения об ошибках
 DIALOGFLOW_PROJECT_ID=идентификатор проекта в Dialogflow
-GOOGLE_APPLICATION_CREDENTIALS=имя файла с ключами доступа сервисного аккаунта
+GOOGLE_APPLICATION_CREDENTIALS=google-credentials.json # это переменную не следует менять
 GOOGLE_CREDENTIALS=содержимое файла с ключами доступа сервисного аккаунта 
 ```
 
