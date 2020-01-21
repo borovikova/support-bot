@@ -7,12 +7,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from dialogflow_process_pharse import process_phrase
 import logging
 import telegram
-
-
-class MyLogsHandler(logging.Handler):
-    def emit(self, record):
-        log_entry = self.format(record)
-        logging_bot.send_message(chat_id, log_entry)
+from logs_handler import TelegramHandler
 
 
 def echo(event, vk_api, project_id):
@@ -36,7 +31,7 @@ if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger()
     logger.setLevel(logging.WARNING)
-    logger.addHandler(MyLogsHandler())
+    logger.addHandler(TelegramHandler(logging_bot, chat_id))
 
     vk_session = vk_api.VkApi(token=group_token)
     vk_api = vk_session.get_api()
@@ -48,4 +43,4 @@ if __name__ == "__main__":
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                     echo(event, vk_api, project_id)
         except Exception:
-            logging.exception("Бот для ВК упал с ошибкой:")
+            logger.exception("Бот для ВК упал с ошибкой:")

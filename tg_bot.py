@@ -5,13 +5,7 @@ from telegram.ext import Updater, Dispatcher, CommandHandler, MessageHandler, Fi
 from dialogflow_process_pharse import process_phrase
 import logging
 from functools import partial
-
-
-class MyLogsHandler(logging.Handler):
-    def emit(self, record):
-        log_entry = self.format(record)
-        logging_bot.send_message(chat_id, log_entry)
-
+from logs_handler import TelegramHandler
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id,
@@ -34,10 +28,9 @@ if __name__ == "__main__":
     chat_id = os.environ["TELEGRAM_LOGGING_CHAT_ID"]
     logging_bot = telegram.Bot(logging_bot_token)
 
-    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s')
     logger = logging.getLogger()
     logger.setLevel(logging.WARNING)
-    logger.addHandler(MyLogsHandler())
+    logger.addHandler(TelegramHandler(logging_bot, chat_id))
 
     echo_partial = partial(
         echo,
@@ -52,4 +45,4 @@ if __name__ == "__main__":
         dispatcher.add_handler(echo_handler)
         updater.start_polling()
     except Exception:
-        logging.exception("Бот для ТГ упал с ошибкой:")
+        logger.exception("Бот для ТГ упал с ошибкой:")
